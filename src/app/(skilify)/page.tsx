@@ -12,10 +12,10 @@ export default function Home() {
         <>
             <section className="relative h- py-24 mx-auto text-center">
                 <h1 className="text-6xl text-center p-4 font-bold">
-                    Exchange Skill for Skill
+                    Peer Tutoring, Easily
                 </h1>
                 <p className="m-5 text-slate-400 text-center text-xl">
-                    Exchange your skills for other skills. No money involved.
+                    Connect and help fellow students in all subjects, ranging from languages, math, and science, beyond, with trust 
                 </p>
                 <Link
                     href="/explore"
