@@ -1,6 +1,7 @@
+"use client";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { BellIcon, EnterIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -13,9 +14,14 @@ import {
     DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import { useContext } from "react";
+import { ProfileContext } from "./data-provider";
+import Link from "next/link";
 
 export default function Profile() {
     const { data: session } = useSession();
+    const router = useRouter();
+    const profile = useContext(ProfileContext);
 
     if (session && session.user) {
         return (
@@ -50,7 +56,15 @@ export default function Profile() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup className="m-2">
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                        <Link
+                            href={
+                                profile ? `/profile/${profile.id}` : "/explore"
+                            }
+                        >
+                            <DropdownMenuItem className="cursor-pointer">
+                                Profile
+                            </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem>Settings</DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />

@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { firestore } from "@/app/api/auth/[...nextauth]/route";
 
+export type User = {
+    name: string;
+    image: string;
+    bio: string;
+    tags: string[];
+    id: string;
+    reputation: number;
+};
+
 export async function GET(
     request: NextRequest,
     { params }: { params: { slug: string } }
@@ -13,6 +22,13 @@ export async function GET(
     if (!userData)
         return NextResponse.json({ error: "User not found" }, { status: 404 });
     return NextResponse.json({
-        user: { name: userData.name, image: userData.image },
+        user: {
+            name: userData.name,
+            image: userData.image,
+            bio: userData.bio,
+            tags: userData.tags || [],
+            id: userObject.id,
+            reputation: userData.reputation,
+        },
     });
 }
