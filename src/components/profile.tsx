@@ -31,7 +31,7 @@ export default function Profile() {
                                 alt={session.user.name!}
                             />
                             <AvatarFallback className="font-sans">
-                                {session.user.email?.charAt(0).toUpperCase()}
+                                {session.user.name?.charAt(0).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
                     </Button>

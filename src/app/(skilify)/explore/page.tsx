@@ -82,7 +82,7 @@ export default function Explore() {
                                                 <AvatarFallback className="font-sans">
                                                     {session &&
                                                         session.user &&
-                                                        session.user.email
+                                                        session.user.name
                                                             ?.charAt(0)
                                                             .toUpperCase()}
                                                 </AvatarFallback>
