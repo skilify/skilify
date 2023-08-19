@@ -27,6 +27,18 @@ export function Navbar() {
                 >
                     Home
                 </Link>
+
+                <Link
+                    href="/questions"
+                    className={cn(
+                        "transition-colors hover:text-foreground/80",
+                        pathname === "/questions"
+                            ? "text-foreground"
+                            : "text-foreground/60"
+                    )}
+                >
+                    Questions
+                </Link>
                 <Link
                     href="/explore"
                     className={cn(
