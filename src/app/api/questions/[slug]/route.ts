@@ -15,6 +15,7 @@ export type Question = {
     content: string;
     timestamp: Timestamp;
     answers: Answer[]
+    id: string;
 };
 
 export async function GET(
