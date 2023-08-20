@@ -3,7 +3,6 @@ import { User } from "@/app/api/profile/[slug]/route";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useContext, useEffect, useState } from "react";
-import { ProfileContext } from "@/components/data-provider";
 import useSWR from "swr";
 import { Cross2Icon, Pencil2Icon, ReloadIcon } from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +19,12 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import validator from "validator";
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { useSession } from "next-auth/react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -126,7 +131,7 @@ const TagInput = ({
 };
 
 export default function Profile({ params }: { params: { slug: string } }) {
-    const profile = useContext(ProfileContext);
+    const { data: session, status } = useSession();
     const { data, mutate } = useSWR<{ user: User }>(
         `/api/profile/${params.slug}`,
         fetcher
@@ -197,13 +202,30 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                     <Skeleton className="h-full w-full" />
                                 )}
                             </div>
-                            <h2 className="text-3xl font-bold tracking-tight">
+                            <div className="flex flex-row gap-4">
+                                <h2 className="text-3xl font-bold tracking-tight">
+                                    {data ? (
+                                        data.user.name
+                                    ) : (
+                                        <Skeleton className="h-9 w-32" />
+                                    )}
+                                </h2>
                                 {data ? (
-                                    data.user.name
+                                    <HoverCard>
+                                        <HoverCardTrigger asChild>
+                                            <Button variant="default">
+                                                Message
+                                            </Button>
+                                        </HoverCardTrigger>
+                                        <HoverCardContent className="w-fit text-sm !p-2">
+                                            Coming Soon!
+                                        </HoverCardContent>
+                                    </HoverCard>
                                 ) : (
-                                    <Skeleton className="h-9 w-32" />
+                                    <Skeleton className="h-9 w-24" />
                                 )}
-                            </h2>
+                            </div>
+
                             <span className="text-sm text-slate-400">
                                 {data ? (
                                     `${data.user.reputation || "0"} Reputation`
@@ -214,9 +236,9 @@ export default function Profile({ params }: { params: { slug: string } }) {
                             <span
                                 className="text-sm text-slate-400 w-64"
                                 onClick={() =>
-                                    profile &&
+                                    session &&
                                     data &&
-                                    profile.id === data.user.id &&
+                                    session.user.id === data.user.id &&
                                     editing === false &&
                                     setEditing(true)
                                 }
@@ -249,9 +271,10 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                                 <Skeleton className="h-5 w-52" />
                                             </div>
                                         )}
-                                        {profile &&
+                                        {session &&
                                             data &&
-                                            profile.id === data.user.id && (
+                                            session.user.id ===
+                                                data.user.id && (
                                                 <Pencil2Icon className="w-3 h-3 self-center mx-2 inline-block" />
                                             )}
                                     </>
@@ -260,9 +283,9 @@ export default function Profile({ params }: { params: { slug: string } }) {
                             <div
                                 className="flex flex-wrap w-full mt-2 gap-2 text-muted-foreground"
                                 onClick={() =>
-                                    profile &&
+                                    session &&
                                     data &&
-                                    profile.id === data.user.id &&
+                                    session.user.id === data.user.id &&
                                     editing === false &&
                                     setEditing(true)
                                 }
@@ -296,14 +319,27 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                         ) : (
                                             <Skeleton className="h-6 w-36" />
                                         )}
-                                        {profile &&
+                                        {session &&
                                             data &&
-                                            profile.id === data.user.id && (
+                                            session.user.id ===
+                                                data.user.id && (
                                                 <Pencil2Icon className="w-3 h-3 self-center mx-2 inline-block" />
                                             )}
                                     </>
                                 )}
                             </div>
+                            <span className="text-muted-foreground">
+                                {data ? (
+                                    <span className="font-bold">
+                                        Discord:{" "}
+                                        <span className="font-normal">
+                                            {data.user.name}
+                                        </span>
+                                    </span>
+                                ) : (
+                                    <Skeleton className="h-5 w-32"></Skeleton>
+                                )}
+                            </span>
                             <p className="text-[0.8rem] font-medium text-destructive">
                                 {editForm.formState.errors.root?.message}
                             </p>

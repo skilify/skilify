@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
-import type { AuthOptions } from "next-auth";
+import type { AuthOptions, Session } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import { FirestoreAdapter, initFirestore } from "@next-auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
+import { AdapterUser } from "next-auth/adapters";
 
 export const firestore = initFirestore({
     credential: cert({
@@ -20,6 +21,25 @@ export const authOptions: AuthOptions = {
             clientSecret: process.env.DISCORD_CLIENT_SECRET!,
         }),
     ],
+    callbacks: {
+        async session({
+            session,
+            user,
+        }: {
+            session: Session;
+            user: {
+                bio?: string;
+                tags?: string[];
+                reputation?: number;
+            } & AdapterUser;
+        }) {
+            session.user.id = user.id;
+            session.user.bio = user.bio;
+            session.user.tags = user.tags;
+            session.user.reputation = user.reputation;
+            return session;
+        },
+    },
 };
 
 const handler = NextAuth(authOptions);

@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { useContext } from "react";
-import { ProfileContext } from "./data-provider";
 import Link from "next/link";
 import { Skeleton } from "./ui/skeleton";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
@@ -23,7 +22,6 @@ import { ExternalLinkIcon } from "@radix-ui/react-icons";
 export default function Profile() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const profile = useContext(ProfileContext);
 
     if (status === "loading") {
         return <Skeleton className="h-10 w-10 rounded-full" />;
@@ -62,7 +60,9 @@ export default function Profile() {
                     <DropdownMenuGroup className="m-2">
                         <Link
                             href={
-                                profile ? `/profile/${profile.id}` : "/explore"
+                                session
+                                    ? `/profile/${session.user.id}`
+                                    : "/explore"
                             }
                         >
                             <DropdownMenuItem className="cursor-pointer">

@@ -2,7 +2,6 @@
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { ProfileWrapper } from "@/components/data-provider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -17,11 +16,9 @@ export default function RootLayout({
     return (
         <html lang="en" className="dark">
             <SessionProvider>
-                <ProfileWrapper>
-                    <body className={`${inter.variable} font-sans`}>
-                        {children}
-                    </body>
-                </ProfileWrapper>
+                <body className={`${inter.variable} font-sans`}>
+                    {children}
+                </body>
             </SessionProvider>
         </html>
     );
