@@ -37,7 +37,9 @@ const FormSchema = z.object({
         .optional()
         .refine(
             (val) =>
-                validator.isAlphanumeric(val || "", "en-US", { ignore: " -" }),
+                validator.isAlphanumeric(val || "", "en-US", {
+                    ignore: " -.#",
+                }),
             {
                 message: "Bio must be alphanumeric.",
             }
@@ -50,7 +52,7 @@ const FormSchema = z.object({
                 .refine(
                     (val) =>
                         validator.isAlphanumeric(val || "", "en-US", {
-                            ignore: " -",
+                            ignore: " -.#",
                         }),
                     {
                         message: "Tag must be alphanumeric.",
