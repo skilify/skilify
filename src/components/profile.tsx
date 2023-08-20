@@ -17,13 +17,16 @@ import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { useContext } from "react";
 import { ProfileContext } from "./data-provider";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Profile() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
     const profile = useContext(ProfileContext);
 
-    if (session && session.user) {
+    if (status === "loading") {
+        return <Skeleton className="h-10 w-10 rounded-full" />;
+    } else if (session && session.user) {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>

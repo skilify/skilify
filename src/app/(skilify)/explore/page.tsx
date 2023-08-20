@@ -9,16 +9,61 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    Cross2Icon,
+} from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import useSWRInfinite from "swr/infinite";
+import { Skeleton } from "@/components/ui/skeleton";
+import { User } from "@/app/api/profile/[slug]/route";
+import Tilt from "react-parallax-tilt";
+import { useState } from "react";
+import Link from "next/link";
+import { useDebounce } from "use-debounce";
+
+const fetcher = (url: string) =>
+    fetch(url).then(async (res) => (await res.json()).users);
+
+const toTitleCase = (str: string) =>
+    str.replace(/\w\S*/g, function (txt: string) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 
 export default function Explore() {
-    const { data: session } = useSession();
+    const [searchName, setSearchName] = useState("");
+    const [searchDebounce] = useDebounce(searchName, 750);
+    const [tagInput, setTagInput] = useState("");
+    const [tags, setTags] = useState<string[]>([]);
+
+    const getKey = (pageIndex: number, previousPageData: any) => {
+        if (previousPageData && !previousPageData.length) return null;
+
+        const search: string[] = [];
+        if (searchDebounce) search.push(`name=${searchDebounce}`);
+        if (tags.length) search.push(`tags=${tags.join(",")}`);
+
+        if (pageIndex === 0)
+            return `/api/explore/get${search && `?${search.join("&")}`}`;
+        return `/api/explore/get?cursor=${
+            previousPageData[previousPageData.length - 1].id
+        }${search && `&${search.join("&")}`}`;
+    };
+    const {
+        data: users,
+        size,
+        setSize,
+        isLoading,
+        isValidating,
+    } = useSWRInfinite(getKey, fetcher, { initialSize: 1 });
+
+    const [page, setPage] = useState(0);
 
     return (
         <div className="container">
@@ -31,15 +76,61 @@ export default function Explore() {
                         Find users to exchange skills with.
                     </span>
                     <div className="flex flex-row gap-4">
-                        <Input className="w-64" placeholder="Search users" />
+                        <Input
+                            className="w-64"
+                            placeholder="Search users"
+                            value={searchName}
+                            onChange={(event) =>
+                                setSearchName(event.target.value)
+                            }
+                        />
+                        <div className="w-fit h-9 rounded-md flex border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors text-muted-foreground self-center focus-within:ring-ring focus-within:ring-1">
+                            <div className="h-auto w-fit flex m-auto gap-2">
+                                {tags.map((tag) => (
+                                    <div
+                                        className="flex border rounded px-2 max-w-fit group"
+                                        key={tag}
+                                        onClick={() =>
+                                            setTags((tags) =>
+                                                tags.filter((t) => t !== tag)
+                                            )
+                                        }
+                                    >
+                                        <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2 group-hover:hidden" />
+                                        <Cross2Icon className="w-2 h-2 self-center text-zinc-500 mr-2 group-hover:block hidden" />
+                                        <span className="text-sm font-sans">
+                                            {tag}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                            <input
+                                className="bg-transparent focus-visible:outline-none ml-2 w-24"
+                                value={tagInput}
+                                onChange={(event) =>
+                                    setTagInput(event.target.value)
+                                }
+                                onKeyDown={(event) => {
+                                    let trimmedInput = tagInput.trim();
+                                    if (event.key === "Enter" && trimmedInput) {
+                                        const input = toTitleCase(trimmedInput);
+                                        setTagInput("");
+                                        if (!tags.includes(input))
+                                            setTags((tags) => [...tags, input]);
+                                    } else if (
+                                        event.key === "Backspace" &&
+                                        !tagInput
+                                    ) {
+                                        setTags((tags) =>
+                                            tags.slice(0, tags.length - 1)
+                                        );
+                                    }
+                                }}
+                                placeholder="Select tags"
+                            />
+                        </div>
                         <Popover>
-                            <PopoverTrigger>
-                                <div className="h-9 rounded-md flex border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors">
-                                    <span className="text-muted-foreground self-center">
-                                        Select tags
-                                    </span>
-                                </div>
-                            </PopoverTrigger>
+                            <PopoverTrigger></PopoverTrigger>
                             <PopoverContent className="w-56 flex flex-wrap justify-center gap-2 text-muted-foreground">
                                 <div className="flex border rounded px-2 max-w-fit basis-1/3">
                                     <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2" />
@@ -69,73 +160,100 @@ export default function Explore() {
                         </Popover>
                     </div>
                     <div className="flex flex-wrap gap-4 justify-center py-4">
-                        {[...Array(12)].map((_, index) => (
-                            <Card className="w-72 h-44" key={index}>
-                                <CardHeader className="pb-2">
-                                    <CardTitle>
-                                        <div className="relative h-10 w-10 rounded-full overflow-clip mb-2">
-                                            <Avatar className="h-8 w-8">
-                                                <AvatarImage
-                                                    src={session?.user?.image!}
-                                                    alt={session?.user?.name!}
-                                                />
-                                                <AvatarFallback className="font-sans">
-                                                    {session &&
-                                                        session.user &&
-                                                        session.user.name
-                                                            ?.charAt(0)
-                                                            .toUpperCase()}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        </div>
-                                        sixfalls
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="font-sans text-slate-400 text-sm">
-                                    Student at Fremont High School
-                                    <div className="relative">
-                                        <div className="absolute top-0 left-0 w-full h-full z-10 bg-gradient-to-r from-transparent from-80% to-card"></div>
-                                        <div className="flex flex-row overflow-hidden mt-2 gap-2">
-                                            <div className="flex border rounded px-2 max-w-fit">
-                                                <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2" />
-                                                <span>Math</span>
-                                            </div>
-                                            <div className="flex border rounded px-2 max-w-fit">
-                                                <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                                <span>Science</span>
-                                            </div>
-                                            <div className="flex border rounded px-2 max-w-fit">
-                                                <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                                <span>Programming</span>
-                                            </div>
-                                            <div className="flex border rounded px-2 max-w-fit">
-                                                <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                                <span>SpaceX</span>
-                                            </div>
-                                            <div className="flex border rounded px-2 max-w-fit">
-                                                <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                                <span>Teaching</span>
-                                            </div>
-                                            <div className="flex border rounded px-2 max-w-fit">
-                                                <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                                <span>Tutoring</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
+                        {isLoading || isValidating ? (
+                            [...Array(16)].map((_, index) => (
+                                <Skeleton className="w-72 h-44" key={index} />
+                            ))
+                        ) : users && users[page] && users[page].length > 0 ? (
+                            users[page].map((user: User, index: number) => (
+                                <Tilt
+                                    key={index}
+                                    transitionSpeed={500}
+                                    tiltMaxAngleX={16}
+                                    tiltMaxAngleY={16}
+                                    scale={1.07}
+                                    tiltReverse
+                                    glareEnable
+                                    glareBorderRadius="0.75rem"
+                                    glareMaxOpacity={0.17}
+                                >
+                                    <Link href={`/profile/${user.id}`}>
+                                        <Card className="w-72 h-44">
+                                            <CardHeader className="pb-2">
+                                                <CardTitle>
+                                                    <div className="relative h-10 w-10 rounded-full overflow-clip mb-2">
+                                                        <Avatar className="h-8 w-8">
+                                                            <AvatarImage
+                                                                src={user.image}
+                                                                alt={user.name}
+                                                            />
+                                                            <AvatarFallback className="font-sans">
+                                                                {user.name
+                                                                    .charAt(0)
+                                                                    .toUpperCase()}
+                                                            </AvatarFallback>
+                                                        </Avatar>
+                                                    </div>
+                                                    {user.name}
+                                                </CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="font-sans text-slate-400 text-sm">
+                                                {user.bio || "No bio provided."}
+                                                <div className="relative">
+                                                    <div className="absolute top-0 left-0 w-full h-full z-10 bg-gradient-to-r from-transparent from-80% to-card"></div>
+                                                    <div className="flex flex-row overflow-hidden mt-2 gap-2">
+                                                        {user.tags.map(
+                                                            (tag) => (
+                                                                <div
+                                                                    className="flex border rounded px-2 max-w-fit"
+                                                                    key={tag}
+                                                                >
+                                                                    <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2" />
+                                                                    <span>
+                                                                        {tag}
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                </Tilt>
+                            ))
+                        ) : (
+                            <div className="flex flex-row h-44 text-center">
+                                <span className="font-semibold text-lg w-full h-full text-muted-foreground">
+                                    Theres nothing here
+                                </span>
+                            </div>
+                        )}
                     </div>
                     <div className="flex flex-row w-full justify-center">
-                        <Button variant="ghost" className="aspect-square p-0">
+                        <Button
+                            variant="ghost"
+                            className="aspect-square p-0"
+                            onClick={() => {
+                                setPage(Math.max(0, page - 1));
+                            }}
+                        >
                             <ChevronLeftIcon className="w-4 h-4 m-0" />
                         </Button>
                         <div className="flex flex-row items-center justify-center">
-                            <Input className="text-center px-0 w-8" value={1} />
-                            <span className="text-sm">/99</span>
+                            <span className="text-sm">Page {page + 1}</span>
                         </div>
 
-                        <Button variant="ghost" className="aspect-square p-0">
+                        <Button
+                            variant="ghost"
+                            className="aspect-square p-0"
+                            onClick={() => {
+                                setPage(page + 1);
+                                if (page + 1 >= size) {
+                                    setSize(size + 1);
+                                }
+                            }}
+                        >
                             <ChevronRightIcon className="w-4 h-4 m-0" />
                         </Button>
                     </div>
