@@ -1,0 +1,41 @@
+import * as React from "react";
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import Tilt from "react-parallax-tilt";
+
+export function QuestionCard(props: {
+    title: string;
+    content: string;
+    id: string;
+}) {
+    return (
+        <Tilt
+            transitionSpeed={500}
+            tiltMaxAngleX={8}
+            tiltMaxAngleY={4}
+            scale={1.02}
+            tiltReverse
+            glareEnable
+            glareBorderRadius="0.75rem"
+            glareMaxOpacity={0.17}
+        >
+            <Link href={"/questions/" + props.id}>
+                <Card className="border border-input bg-transparent shadow-sm hover:text-accent-foreground">
+                    <CardHeader>
+                        <CardTitle>
+                            {props.title}
+                            <ChevronRightIcon className="ml-auto h-6 w-6" />
+                        </CardTitle>
+                        <CardDescription>{props.content}</CardDescription>
+                    </CardHeader>
+                </Card>
+            </Link>
+        </Tilt>
+    );
+}
