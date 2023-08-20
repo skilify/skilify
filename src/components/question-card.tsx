@@ -17,8 +17,8 @@ export function QuestionCard(props: {
     return (
         <Tilt
             transitionSpeed={500}
-            tiltMaxAngleX={8}
-            tiltMaxAngleY={4}
+            tiltMaxAngleX={4}
+            tiltMaxAngleY={2}
             scale={1.02}
             tiltReverse
             glareEnable
