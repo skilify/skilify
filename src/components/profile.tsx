@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { ProfileContext } from "./data-provider";
 import Link from "next/link";
 import { Skeleton } from "./ui/skeleton";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 export default function Profile() {
     const { data: session, status } = useSession();
@@ -68,7 +69,14 @@ export default function Profile() {
                                 Profile
                             </DropdownMenuItem>
                         </Link>
-                        <DropdownMenuItem>Settings</DropdownMenuItem>
+                        <Link href="//sixfal.ls">
+                            <DropdownMenuItem className="cursor-pointer">
+                                Credits
+                                <DropdownMenuShortcut>
+                                    <ExternalLinkIcon />
+                                </DropdownMenuShortcut>
+                            </DropdownMenuItem>
+                        </Link>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem

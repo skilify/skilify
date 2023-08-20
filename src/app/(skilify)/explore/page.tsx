@@ -98,7 +98,7 @@ export default function Explore() {
                                     >
                                         <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2 group-hover:hidden" />
                                         <Cross2Icon className="w-2 h-2 self-center text-zinc-500 mr-2 group-hover:block hidden" />
-                                        <span className="text-sm font-sans">
+                                        <span className="text-sm font-sans whitespace-nowrap">
                                             {tag}
                                         </span>
                                     </div>
@@ -129,35 +129,6 @@ export default function Explore() {
                                 placeholder="Select tags"
                             />
                         </div>
-                        <Popover>
-                            <PopoverTrigger></PopoverTrigger>
-                            <PopoverContent className="w-56 flex flex-wrap justify-center gap-2 text-muted-foreground">
-                                <div className="flex border rounded px-2 max-w-fit basis-1/3">
-                                    <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2" />
-                                    <span>Math</span>
-                                </div>
-                                <div className="flex border rounded px-2 max-w-fit basis-1/3">
-                                    <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                    <span>Science</span>
-                                </div>
-                                <div className="flex border rounded px-2 max-w-fit basis-1/3">
-                                    <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                    <span>Programming</span>
-                                </div>
-                                <div className="flex border rounded px-2 max-w-fit basis-1/3">
-                                    <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                    <span>SpaceX</span>
-                                </div>
-                                <div className="flex border rounded px-2 max-w-fit basis-1/3">
-                                    <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                    <span>Teaching</span>
-                                </div>
-                                <div className="flex border rounded px-2 max-w-fit basis-1/3">
-                                    <div className="w-2 h-2 self-center rounded-full bg-green-900 mr-2" />
-                                    <span>Tutoring</span>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
                     </div>
                     <div className="flex flex-wrap gap-4 justify-center py-4">
                         {isLoading || isValidating ? (
@@ -209,7 +180,7 @@ export default function Explore() {
                                                                     key={tag}
                                                                 >
                                                                     <div className="w-2 h-2 self-center rounded-full bg-blue-900 mr-2" />
-                                                                    <span>
+                                                                    <span className="whitespace-nowrap">
                                                                         {tag}
                                                                     </span>
                                                                 </div>
