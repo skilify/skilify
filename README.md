@@ -48,3 +48,4 @@ Skilify is a platform for students to exchange network, exchange skills, and tut
 - Moderation System to keep platform friendly
 - View questions and answers from users
 - Better reputation system
+- Rate Limits to Prevent Spamming

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { firestore } from "@/app/api/auth/[...nextauth]/route";
 import { DocumentReference, Timestamp } from "firebase-admin/firestore";
+import limiter from "@/lib/middleware";
 
 export type Answer = {
   author: { name: string; image: string; id: string };
@@ -32,6 +33,12 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  try {
+    await limiter.check(10, request.ip ? request.ip : "0.0.0.0"); // 10 requests per minute
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+  }
   const question = firestore.doc(
     `questions/${encodeURIComponent(params.slug)}`
   );

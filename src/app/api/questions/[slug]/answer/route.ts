@@ -3,6 +3,7 @@ import { authOptions, firestore } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
 import * as z from "zod";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
+import limiter from "@/lib/middleware";
 
 const formSchema = z.object({
   content: z
@@ -19,6 +20,12 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  try {
+    await limiter.check(10, request.ip ? request.ip : "0.0.0.0"); // 10 requests per minute
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+  }
   const isValid = formSchema.safeParse(await request.json());
   if (!isValid.success)
     return NextResponse.json(
