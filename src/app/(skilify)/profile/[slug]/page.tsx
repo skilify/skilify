@@ -431,42 +431,6 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                     </Button>
                                 </div>
                             )}
-                            <span className="text-muted-foreground">
-                                {data ? (
-                                    <span className="font-bold">
-                                        Discord:{" "}
-                                        <span className="font-normal">
-                                            {data.user.name}
-                                        </span>
-                                    </span>
-                                ) : (
-                                    <Skeleton className="h-5 w-32"></Skeleton>
-                                )}
-                            </span>
-                            <p className="text-[0.8rem] font-medium text-destructive">
-                                {editForm.formState.errors.root?.message}
-                            </p>
-                            {editing && (
-                                <div className="flex flex-row gap-2">
-                                    <Button
-                                        type="reset"
-                                        variant="secondary"
-                                        onClick={() => setEditing(false)}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        variant="default"
-                                        disabled={submitting}
-                                    >
-                                        {submitting && (
-                                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                                        )}
-                                        {submitting ? "Saving..." : "Save"}
-                                    </Button>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </form>
