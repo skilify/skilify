@@ -30,7 +30,7 @@ const FormSchema = z.object({
                 )
                 .transform((str) => filter.clean(str))
         )
-        .length(10, { message: "You can only have 10 tags." })
+        .max(10, { message: "You can only have 10 tags." })
         .optional(),
 });
 
