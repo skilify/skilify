@@ -60,7 +60,7 @@ export async function PATCH(request: NextRequest, response: NextResponse) {
   if (!session)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const user = firestore.doc(`users/${session.user.id}`);
-  user.update({
+  await user.update({
     bio: isValid.data.bio || "",
     tags: isValid.data.tags || [],
   });
