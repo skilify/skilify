@@ -4,7 +4,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
-import { Cross2Icon, Pencil2Icon, ReloadIcon } from "@radix-ui/react-icons";
+import {
+    Cross2Icon,
+    Pencil2Icon,
+    ReloadIcon,
+    TriangleUpIcon,
+} from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Noop, useForm } from "react-hook-form";
@@ -25,6 +30,7 @@ import {
     HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { useSession } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -132,6 +138,7 @@ const TagInput = ({
 
 export default function Profile({ params }: { params: { slug: string } }) {
     const { data: session, status } = useSession();
+    const toast = useToast();
     const { data, mutate } = useSWR<{ user: User }>(
         `/api/profile/${params.slug}`,
         fetcher
@@ -213,7 +220,10 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                 {data ? (
                                     <HoverCard>
                                         <HoverCardTrigger asChild>
-                                            <Button variant="default">
+                                            <Button
+                                                variant="default"
+                                                type="button"
+                                            >
                                                 Message
                                             </Button>
                                         </HoverCardTrigger>
@@ -226,9 +236,66 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                 )}
                             </div>
 
-                            <span className="text-sm text-slate-400">
+                            <span className="text-sm flex flex-row items-center text-slate-400">
                                 {data ? (
-                                    `${data.user.reputation || "0"} Reputation`
+                                    <>
+                                        {`${
+                                            data.user.reputation || "0"
+                                        } Reputation`}
+                                        {session &&
+                                            data &&
+                                            session.user.id !==
+                                                data.user.id && (
+                                                <Button
+                                                    variant="outline"
+                                                    className="aspect-square p-0 ml-2"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        if (data) {
+                                                            fetch(
+                                                                `/api/profile/${data.user.id}`,
+                                                                {
+                                                                    method: "POST",
+                                                                }
+                                                            )
+                                                                .then((res) =>
+                                                                    res.json()
+                                                                )
+                                                                .then((res) => {
+                                                                    if (
+                                                                        res.error
+                                                                    ) {
+                                                                        toast.toast(
+                                                                            {
+                                                                                title: "Failed to upvote",
+                                                                                description:
+                                                                                    res.error,
+                                                                            }
+                                                                        );
+                                                                    } else {
+                                                                        mutate({
+                                                                            user: {
+                                                                                ...data.user,
+                                                                                reputation:
+                                                                                    res.reputation,
+                                                                            },
+                                                                        } as any);
+                                                                        toast.toast(
+                                                                            {
+                                                                                title: "Upvoted!",
+                                                                                description:
+                                                                                    "You have successfully upvoted this user!",
+                                                                            }
+                                                                        );
+                                                                    }
+                                                                });
+                                                        }
+                                                    }}
+                                                >
+                                                    <TriangleUpIcon className="" />
+                                                </Button>
+                                            )}
+                                    </>
                                 ) : (
                                     <Skeleton className="h-5 w-24" />
                                 )}
@@ -328,6 +395,42 @@ export default function Profile({ params }: { params: { slug: string } }) {
                                     </>
                                 )}
                             </div>
+                            <span className="text-muted-foreground">
+                                {data ? (
+                                    <span className="font-bold">
+                                        Discord:{" "}
+                                        <span className="font-normal">
+                                            {data.user.name}
+                                        </span>
+                                    </span>
+                                ) : (
+                                    <Skeleton className="h-5 w-32"></Skeleton>
+                                )}
+                            </span>
+                            <p className="text-[0.8rem] font-medium text-destructive">
+                                {editForm.formState.errors.root?.message}
+                            </p>
+                            {editing && (
+                                <div className="flex flex-row gap-2">
+                                    <Button
+                                        type="reset"
+                                        variant="secondary"
+                                        onClick={() => setEditing(false)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        variant="default"
+                                        disabled={submitting}
+                                    >
+                                        {submitting && (
+                                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                        )}
+                                        {submitting ? "Saving..." : "Save"}
+                                    </Button>
+                                </div>
+                            )}
                             <span className="text-muted-foreground">
                                 {data ? (
                                     <span className="font-bold">
