@@ -10,7 +10,6 @@ export type Answer = {
 };
 
 type ServerAnswer = {
-    //shit answer
     author: DocumentReference;
     content: string;
     timestamp: Timestamp;
@@ -60,7 +59,7 @@ export async function GET(
     const a = await questionData.author.get();
     let adata = a.data();
     if (!a.exists || !adata) {
-        adata = { name: "shtiter" };
+        adata = { name: "Ghost" };
     }
     return NextResponse.json({
         question: {
@@ -78,7 +77,7 @@ export async function GET(
                         const author = await i.author.get();
                         let authordata = author.data();
                         if (!author.exists || !authordata) {
-                            authordata = { name: "shtiter" };
+                            authordata = { name: "Ghost" };
                         }
                         return {
                             author: {

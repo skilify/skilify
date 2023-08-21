@@ -45,16 +45,7 @@ const FormSchema = z.object({
         .max(100, {
             message: "Bio must not be longer than 100 characters.",
         })
-        .optional()
-        .refine(
-            (val) =>
-                validator.isAlphanumeric(val || "", "en-US", {
-                    ignore: " -.#",
-                }),
-            {
-                message: "Bio must be alphanumeric.",
-            }
-        ),
+        .optional(),
     tags: z
         .array(
             z
