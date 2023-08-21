@@ -13,7 +13,7 @@ const formSchema = z.object({
             message: "Title must be at least 4 characters.",
         })
         .max(80, { message: "Title must be less than 80 characters." })
-        .transform(filter.clean),
+        .transform((str) => filter.clean(str)),
     content: z
         .string()
         .min(4, {
@@ -22,7 +22,7 @@ const formSchema = z.object({
         .max(500, {
             message: "Content must be less than 500 characters.",
         })
-        .transform(filter.clean),
+        .transform((str) => filter.clean(str)),
 });
 
 export async function POST(request: NextRequest, response: NextResponse) {

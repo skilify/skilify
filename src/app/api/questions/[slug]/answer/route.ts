@@ -15,7 +15,7 @@ const formSchema = z.object({
         .max(500, {
             message: "Content must be less than 500 characters.",
         })
-        .transform(filter.clean),
+        .transform((str) => filter.clean(str)),
 });
 
 export async function POST(

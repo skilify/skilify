@@ -12,7 +12,7 @@ const FormSchema = z.object({
         .max(100, {
             message: "Bio must not be longer than 100 characters.",
         })
-        .transform(filter.clean)
+        .transform((str) => filter.clean(str))
         .optional(),
     tags: z
         .array(
@@ -28,7 +28,7 @@ const FormSchema = z.object({
                         message: "Tag must be alphanumeric.",
                     }
                 )
-                .transform(filter.clean)
+                .transform((str) => filter.clean(str))
         )
         .optional(),
 });
