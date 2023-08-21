@@ -1,4 +1,5 @@
 import { authOptions, firestore } from "@/app/api/auth/[...nextauth]/route";
+import { filter } from "@/lib/badwords";
 import limiter from "@/lib/middleware";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { getServerSession } from "next-auth/next";
@@ -13,7 +14,8 @@ const formSchema = z.object({
         })
         .max(500, {
             message: "Content must be less than 500 characters.",
-        }),
+        })
+        .transform(filter.clean),
 });
 
 export async function POST(

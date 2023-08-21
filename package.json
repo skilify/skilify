@@ -25,6 +25,7 @@
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
+    "bad-words": "^3.0.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "eslint": "8.47.0",
@@ -48,6 +49,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@types/bad-words": "^3.0.1",
     "@types/lodash": "^4.14.197",
     "@types/validator": "^13.11.1"
   }

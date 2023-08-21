@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { NextRequest, NextResponse } from "next/server";
 import validator from "validator";
 import * as z from "zod";
+import { filter } from "@/lib/badwords";
 
 const FormSchema = z.object({
     bio: z
@@ -11,6 +12,7 @@ const FormSchema = z.object({
         .max(100, {
             message: "Bio must not be longer than 100 characters.",
         })
+        .transform(filter.clean)
         .optional(),
     tags: z
         .array(
@@ -26,6 +28,7 @@ const FormSchema = z.object({
                         message: "Tag must be alphanumeric.",
                     }
                 )
+                .transform(filter.clean)
         )
         .optional(),
 });
