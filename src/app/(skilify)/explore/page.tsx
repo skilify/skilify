@@ -131,7 +131,7 @@ export default function Explore() {
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-4 justify-center py-4">
-                        {isLoading || isValidating ? (
+                        {isLoading ? (
                             [...Array(12)].map((_, index) => (
                                 <Skeleton className="w-72 h-44" key={index} />
                             ))
