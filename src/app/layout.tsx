@@ -1,8 +1,8 @@
 "use client";
-import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 const inter = Inter({
     subsets: ["latin"],

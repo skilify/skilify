@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import { firestore } from "@/app/api/auth/[...nextauth]/route";
 import type { User } from "@/app/api/profile/[slug]/route";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, response: NextResponse) {
     let exploreUsers = firestore.collection("users").limit(12);

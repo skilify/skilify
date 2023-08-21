@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
-import type { AuthOptions, Session } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 import { FirestoreAdapter, initFirestore } from "@next-auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
+import type { AuthOptions, Session } from "next-auth";
+import NextAuth from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
+import DiscordProvider from "next-auth/providers/discord";
 
 export const firestore = initFirestore({
     credential: cert({

@@ -1,11 +1,11 @@
-import {
-    ShuffleIcon,
-    MagnifyingGlassIcon,
-    ChatBubbleIcon,
-} from "@radix-ui/react-icons";
-import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import {
+    ChatBubbleIcon,
+    MagnifyingGlassIcon,
+    ShuffleIcon,
+} from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function Home() {
     return (
@@ -15,7 +15,8 @@ export default function Home() {
                     Peer Tutoring, Easily
                 </h1>
                 <p className="m-5 text-slate-400 text-center text-xl">
-                    Connect and help fellow students in all subjects, ranging from languages, math, and science, beyond, with trust 
+                    Connect and help fellow students in all subjects, ranging
+                    from languages, math, and science, beyond, with trust
                 </p>
                 <Link
                     href="/explore"

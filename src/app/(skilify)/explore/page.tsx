@@ -1,32 +1,25 @@
 "use client";
+import { User } from "@/app/api/profile/[slug]/route";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { useSession } from "next-auth/react";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
     Cross2Icon,
 } from "@radix-ui/react-icons";
-import { Input } from "@/components/ui/input";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import useSWRInfinite from "swr/infinite";
-import { Skeleton } from "@/components/ui/skeleton";
-import { User } from "@/app/api/profile/[slug]/route";
-import Tilt from "react-parallax-tilt";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import Tilt from "react-parallax-tilt";
+import useSWRInfinite from "swr/infinite";
 import { useDebounce } from "use-debounce";
 
 const fetcher = (url: string) =>

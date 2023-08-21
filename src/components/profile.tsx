@@ -1,23 +1,22 @@
 "use client";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
-    DropdownMenuTrigger,
     DropdownMenuContent,
-    DropdownMenuSeparator,
+    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuGroup,
+    DropdownMenuSeparator,
     DropdownMenuShortcut,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
-import { useContext } from "react";
-import Link from "next/link";
-import { Skeleton } from "./ui/skeleton";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Profile() {
     const { data: session, status } = useSession();

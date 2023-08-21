@@ -1,38 +1,37 @@
 "use client";
 import { Answer, Question } from "@/app/api/questions/[slug]/route";
 import { Comment } from "@/components/comment";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import {
-    DialogHeader,
-    DialogFooter,
     Dialog,
-    DialogTrigger,
     DialogContent,
-    DialogTitle,
     DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+    Form,
+    FormControl,
     FormField,
     FormItem,
     FormLabel,
-    FormControl,
     FormMessage,
-    Form,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChatBubbleIcon, PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { ChatBubbleIcon, ReloadIcon } from "@radix-ui/react-icons";
 import Error from "next/error";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import * as z from "zod";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import router, { useRouter } from "next/navigation";
-import { toast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
 
 const fetcher = (url: string) =>
     fetch(url).then(async (res) => (await res.json()).question);

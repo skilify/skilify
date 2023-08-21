@@ -1,19 +1,7 @@
 "use client";
 import { User } from "@/app/api/profile/[slug]/route";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useContext, useEffect, useState } from "react";
-import useSWR from "swr";
-import {
-    Cross2Icon,
-    Pencil2Icon,
-    ReloadIcon,
-    TriangleUpIcon,
-} from "@radix-ui/react-icons";
-import { Textarea } from "@/components/ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Noop, useForm } from "react-hook-form";
-import * as z from "zod";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -22,15 +10,27 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import validator from "validator";
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { useSession } from "next-auth/react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    Cross2Icon,
+    Pencil2Icon,
+    ReloadIcon,
+    TriangleUpIcon,
+} from "@radix-ui/react-icons";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { Noop, useForm } from "react-hook-form";
+import useSWR from "swr";
+import validator from "validator";
+import * as z from "zod";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

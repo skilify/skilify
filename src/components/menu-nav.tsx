@@ -1,9 +1,8 @@
 "use client";
-import * as React from "react";
+import Profile from "@/components/profile";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import Profile from "@/components/profile";
 
 export function Navbar() {
     const pathname = usePathname();

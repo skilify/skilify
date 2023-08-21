@@ -1,17 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { Answer } from "@/app/api/questions/[slug]/route";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import Link from "next/link";
-import { Answer } from "@/app/api/questions/[slug]/route";
 import Tilt from "react-parallax-tilt";
 
 export function Comment({ props }: { props: Answer }) {

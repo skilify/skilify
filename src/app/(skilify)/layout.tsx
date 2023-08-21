@@ -1,7 +1,7 @@
-import { PropsWithChildren } from "react";
+import { SiteFooter } from "@/components/footer";
 import { Navbar } from "@/components/menu-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { SiteFooter } from "@/components/footer";
+import { PropsWithChildren } from "react";
 
 export default function Layout({ children }: PropsWithChildren) {
     return (

@@ -1,6 +1,5 @@
+import { firestore } from "@/app/api/auth/[...nextauth]/route";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions, firestore } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
 
 export type User = {
     name: string;
