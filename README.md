@@ -15,7 +15,7 @@ Skilify is a platform for students to exchange network, exchange skills, and tut
 - Tailwind CSS - CSS Framework
 - TypeScript - Typed JavaScript (Programming Language)
 - Visual Studio Code - Primary IDE
-- Github - Version Control & Collaboration-\
+- Github - Version Control & Collaboration
 - Vercel - Deployment
 
 # Challenges
