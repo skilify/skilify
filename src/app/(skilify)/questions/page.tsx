@@ -63,25 +63,35 @@ export default function Question() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
+    const [submitting, setSubmitting] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    useEffect(() => {
+        if (!submitting) {
+            form.reset({ title: "", content: "" });
+            setIsOpen(false);
+        }
+    }, [submitting, form]);
     function onSubmit(values: z.infer<typeof formSchema>) {
+        setSubmitting(true);
         fetch(`/api/questions/post`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(values),
-        }).then((response: Response) => {
-            if (response && response.status == 200) {
-                response.json().then((data) => {
-                    router.push("/questions/" + data.id);
-                });
-            } else {
-                toast({
-                    variant: "destructive",
-                    title: "An error occured! Please try again later.",
-                });
-            }
-        });
+        })
+            .then(async (response: Response) => {
+                if (response && response.status == 200) {
+                    const json = await response.json();
+                    router.push("/questions/" + json.id);
+                } else {
+                    toast({
+                        variant: "destructive",
+                        title: "An error occured! Please try again later.",
+                    });
+                }
+            })
+            .finally(() => setSubmitting(false));
     }
 
     const getKey = (pageIndex: number, previousPageData: any) => {
@@ -119,7 +129,7 @@ export default function Question() {
                         value={searchName}
                         onChange={(event) => setSearchName(event.target.value)}
                     />
-                    <Dialog>
+                    <Dialog open={isOpen} onOpenChange={setIsOpen}>
                         <DialogTrigger asChild>
                             <Button>
                                 <PlusIcon className="w-4 h-4 mr-2" />
@@ -171,8 +181,17 @@ export default function Question() {
                                         )}
                                     />
                                     <DialogFooter>
-                                        <Button type="submit" className="mt-2">
-                                            Ask question
+                                        <Button
+                                            type="submit"
+                                            className="mt-2"
+                                            disabled={submitting}
+                                        >
+                                            {submitting && (
+                                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                            )}
+                                            {submitting
+                                                ? "Asking..."
+                                                : "Ask question"}
                                         </Button>
                                     </DialogFooter>
                                 </form>

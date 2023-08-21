@@ -24,14 +24,15 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChatBubbleIcon, PlusIcon } from "@radix-ui/react-icons";
+import { ChatBubbleIcon, PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
 import Error from "next/error";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import * as z from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import router from "next/navigation";
+import router, { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
+import { useEffect, useState } from "react";
 
 const fetcher = (url: string) =>
     fetch(url).then(async (res) => (await res.json()).question);
@@ -48,7 +49,8 @@ const formSchema = z.object({
 });
 
 export default function Page({ params }: { params: { slug: string } }) {
-    const { data, isLoading, isValidating, error } = useSWR<Question>(
+    const router = useRouter();
+    const { data, isLoading, isValidating, error, mutate } = useSWR<Question>(
         `/api/questions/${params.slug}`,
         fetcher
     );
@@ -56,8 +58,16 @@ export default function Page({ params }: { params: { slug: string } }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
+    const [submitting, setSubmitting] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    useEffect(() => {
+        if (!submitting) {
+            form.reset({ content: "" });
+            setIsOpen(false);
+        }
+    }, [submitting, form]);
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        setSubmitting(true);
         // src/app/(skilify)/profile/[slug]/page.tsx:152:4 for example
         fetch(`/api/questions/${params.slug}/answer`, {
             method: "POST",
@@ -65,22 +75,22 @@ export default function Page({ params }: { params: { slug: string } }) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(values),
-        }).then((response: Response) => {
-            if (response && response.status == 200) {
-                response.json().then(() => {
-                    window.location.reload();
-                });
-                toast({
-                    variant: "default",
-                    title: "Question Answered! Thanks!",
-                });
-            } else {
-                toast({
-                    variant: "destructive",
-                    title: "An error occured! Please try again later.",
-                });
-            }
-        });
+        })
+            .then((response: Response) => {
+                if (response && response.status == 200) {
+                    mutate();
+                    toast({
+                        variant: "default",
+                        title: "Question Answered! Thanks!",
+                    });
+                } else {
+                    toast({
+                        variant: "destructive",
+                        title: "An error occured! Please try again later.",
+                    });
+                }
+            })
+            .finally(() => setSubmitting(false));
     }
 
     //   console.log(data);
@@ -163,7 +173,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                     {isLoading ? (
                         <Skeleton className="w-auto h-36"></Skeleton>
                     ) : (
-                        <Dialog>
+                        <Dialog open={isOpen} onOpenChange={setIsOpen}>
                             <DialogTrigger asChild>
                                 <Button>
                                     <ChatBubbleIcon className="w-4 h-4 mr-2" />
@@ -204,8 +214,14 @@ export default function Page({ params }: { params: { slug: string } }) {
                                             <Button
                                                 type="submit"
                                                 className="mt-2"
+                                                disabled={submitting}
                                             >
-                                                Answer
+                                                {submitting && (
+                                                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                                                )}
+                                                {submitting
+                                                    ? "Answering..."
+                                                    : "Answer"}
                                             </Button>
                                         </DialogFooter>
                                     </form>
