@@ -33,7 +33,7 @@ export async function GET(
     { params }: { params: { slug: string } }
 ) {
     try {
-        await limiter.check(10, request.ip ? request.ip : "0.0.0.0"); // 10 requests per minute
+        await limiter.check(60, request.ip ? request.ip : "0.0.0.0"); // 10 requests per minute
     } catch (error) {
         console.error(error);
         return NextResponse.json(

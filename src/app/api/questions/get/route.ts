@@ -5,7 +5,7 @@ import { Question } from "../[slug]/route";
 
 export async function GET(request: NextRequest, response: NextResponse) {
     try {
-        await limiter.check(10, request.ip ? request.ip : "0.0.0.0"); // 10 requests per minute
+        await limiter.check(60, request.ip ? request.ip : "0.0.0.0"); // 10 requests per minute
     } catch (error) {
         console.error(error);
         return NextResponse.json(
