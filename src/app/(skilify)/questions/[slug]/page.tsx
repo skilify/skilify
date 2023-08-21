@@ -29,28 +29,14 @@ import Error from "next/error";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import * as z from "zod";
-import validator from "validator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import router from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 const fetcher = (url: string) =>
   fetch(url).then(async (res) => (await res.json()).question);
 
 const formSchema = z.object({
-  title: z
-    .string()
-    .min(4, {
-      message: "Title must be at least 4 characters.",
-    })
-    .max(80, { message: "Title must be less than 80 characters." })
-    .refine(
-      (val) =>
-        validator.isAlphanumeric(val || "", "en-US", {
-          ignore: " -.#",
-        }),
-      {
-        message: "Title must be alphanumeric.",
-      }
-    ),
   content: z
     .string()
     .min(4, {
@@ -58,16 +44,7 @@ const formSchema = z.object({
     })
     .max(500, {
       message: "Content must be less than 500 characters.",
-    })
-    .refine(
-      (val) =>
-        validator.isAlphanumeric(val || "", "en-US", {
-          ignore: " -.#",
-        }),
-      {
-        message: "Title must be alphanumeric.",
-      }
-    ),
+    }),
 });
 
 export default function Page({ params }: { params: { slug: string } }) {
@@ -80,8 +57,30 @@ export default function Page({ params }: { params: { slug: string } }) {
     resolver: zodResolver(formSchema),
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // src/app/(skilify)/profile/[slug]/page.tsx:152:4 for example
     console.log(values);
+    // src/app/(skilify)/profile/[slug]/page.tsx:152:4 for example
+    fetch(`/api/questions/${params.slug}/answer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    }).then((response: Response) => {
+      if (response && response.status == 200) {
+        response.json().then(() => {
+          window.location.reload();
+        });
+        toast({
+          variant: "default",
+          title: "Question Answered! Thanks!",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "An error occured! Please try again later.",
+        });
+      }
+    });
   }
 
   //   console.log(data);
@@ -118,7 +117,9 @@ export default function Page({ params }: { params: { slug: string } }) {
                   </Avatar>
                 </div>
 
-                <span className="text-md text-gray-300">{data?.author.name}</span>
+                <span className="text-md text-gray-300">
+                  {data?.author.name}
+                </span>
               </>
             )}
           </div>
@@ -203,8 +204,6 @@ export default function Page({ params }: { params: { slug: string } }) {
             <Skeleton className="w-1 h-1"></Skeleton>
           ) : data && data.answers.length > 0 ? (
             data.answers.map((a: Answer, index: number) => {
-              console.log(a);
-
               return <Comment props={a} key={index} />;
             })
           ) : (

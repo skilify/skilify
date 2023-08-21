@@ -18,8 +18,11 @@ export function Comment({ props }: { props: Answer }) {
     <Card className="border border-input bg-transparent shadow-sm hover:text-accent-foreground">
       <CardHeader>
         <CardTitle className="text-lg">
-          <Link className="flex flex-row gap-3" href={"/profiles/" + props.author.id}>
-            <div className="rounded-full overflow-clip h-10 w-10">
+          <div className="flex flex-row gap-3">
+            <Link
+              href={"/profiles/" + props.author.id}
+              className="rounded-full overflow-clip h-10 w-10"
+            >
               <Avatar className="h-10 w-10 rounded-full overflow-clip">
                 <AvatarImage
                   src={props.author.image}
@@ -29,10 +32,11 @@ export function Comment({ props }: { props: Answer }) {
                   {props.author.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-            </div>
-
-            {props.author.name}
-          </Link>
+            </Link>
+            <Link href={"/profile/" + props.author.id}>
+              {props.author.name}
+            </Link>
+          </div>
         </CardTitle>
         <CardContent>{props.content}</CardContent>
       </CardHeader>
@@ -42,7 +46,9 @@ export function Comment({ props }: { props: Answer }) {
           year: "numeric",
           month: "long",
           day: "numeric",
-        }) + " " + new Date(props.timestamp).toLocaleTimeString(navigator.language)}
+        }) +
+          " " +
+          new Date(props.timestamp).toLocaleTimeString(navigator.language)}
       </CardFooter>
     </Card>
   );
