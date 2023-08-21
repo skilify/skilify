@@ -25,6 +25,7 @@ Skilify is a platform for students to exchange network, exchange skills, and tut
 - Getting the authenticated user's id - next-auth likely doesn't endorse this use-case, and we had to write our own component & API route to retrieve the user's id
 - Securing authentication from bad actors
 - Learning completely new framework and database systems
+- Had issues merging commits as files were messed up by a formatting commit
 
 # Accomplishments
 
