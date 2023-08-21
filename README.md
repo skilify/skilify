@@ -26,7 +26,7 @@ Skilify is a platform for students to network, exchange skills, and tutor. A stu
 - Merging conflicted files, due to a change in formatting between different developers (different formatting led to numerous conflicts)
 - Getting the authenticated user's id - ~~next-auth likely doesn't endorse this use-case, and we had to write our own component & API route to retrieve the user's id~~ See below "What we learned".
 - Properly attaining user data
-- Protecting routes from bad actors and spam - we found out it was possible to spam create buttons, and overload the database and API (we had to upgrade to the Firebase Blaze plan..)
+- Protecting routes from bad actors and spam - we found out it was possible to spam create buttons, and overload the database and API (we had to upgrade to the Firebase Blaze plan.)
 
 # Accomplishments
 
