@@ -3,7 +3,7 @@ import { firestore } from "@/app/api/auth/[...nextauth]/route";
 import type { User } from "@/app/api/profile/[slug]/route";
 
 export async function GET(request: NextRequest, response: NextResponse) {
-    let exploreUsers = firestore.collection("users").limit(16);
+    let exploreUsers = firestore.collection("users").limit(12);
     if (request.nextUrl.searchParams.get("cursor")) {
         const cursorSnap = await firestore
             .doc(

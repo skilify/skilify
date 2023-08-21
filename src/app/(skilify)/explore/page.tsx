@@ -132,8 +132,8 @@ export default function Explore() {
                     </div>
                     <div className="flex flex-wrap gap-4 justify-center py-4">
                         {isLoading || isValidating ? (
-                            [...Array(16)].map((_, index) => (
-                                <Skeleton className="w-full h-44" key={index} />
+                            [...Array(12)].map((_, index) => (
+                                <Skeleton className="w-72 h-44" key={index} />
                             ))
                         ) : users && users[page] && users[page].length > 0 ? (
                             users[page].map((user: User, index: number) => (
