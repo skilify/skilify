@@ -1,10 +1,9 @@
 # Inspiration
 
-We had a tough time getting help for our homework, assignments, and projects in school, which left us feeling stressed and stuck. So, we came up with Skilify, a platform created by students, for students. Skilify is our way of fixing this problem. It's a place where students can help each other out. You know, sharing ideas, giving solutions, and providing guidance – all the stuff we wish we had when we were struggling. It's not just about getting answers; it's about building skills and boosting confidence. With Skilify, students can tackle their academic challenges with more know-how and a can-do attitude. It's like having a supportive study buddy available whenever you need it.
-
+Struggling to get the support we needed for our schoolwork was tough – homework, assignments, presentations, you name it. The stress and frustration were real when we couldn't get the help we needed. That's when we had a lightbulb moment and came up with Skilify – a platform made by students, for students, with a special focus on tackling a big issue: unequal access to tutoring resources, especially for those from low-income backgrounds. Skilify isn't just about finding answers; it's about making sure every student has an equal chance to succeed. We're changing the game by providing a space where everyone can help each other out – sharing ideas, giving solutions, and offering guidance – the kind of stuff that can level the playing field. It's about empowerment and boosting confidence. Skilify isn't just a solution; it's a supportive community that's all about making sure every student, regardless of their background, has the opportunity to thrive academically.
 # What it does
 
-Skilify is a platform for students to exchange network, exchange skills, and tutor. A student who's strong suit is math could need help peer reviewing their essay, and in exchange for their math skills, someone else who needs math tutoring could help them out in writing. Skilify makes it easy for students to find others to exchange skills with and tutor, efficiently and at no cost.
+Skilify is a platform for students to network, exchange skills, and tutor. A student whose strong suit is math could need help peer reviewing their essay, and in exchange for their math skills, someone else who needs math tutoring could help them out in writing. Skilify makes it easy for students to find others to exchange skills with and tutor, efficiently and at no cost.
 
 # How we built it
 
