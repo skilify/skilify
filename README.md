@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Inspiration
 
-## Getting Started
+We had a tough time getting help for our homework, assignments, and projects in school, which left us feeling stressed and stuck. So, we came up with Skilify, a platform created by students, for students. Skilify is our way of fixing this problem. It's a place where students can help each other out. You know, sharing ideas, giving solutions, and providing guidance – all the stuff we wish we had when we were struggling. It's not just about getting answers; it's about building skills and boosting confidence. With Skilify, students can tackle their academic challenges with more know-how and a can-do attitude. It's like having a supportive study buddy available whenever you need it.
 
-First, run the development server:
+# What it does
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Skilify is a platform for students to exchange network, exchange skills, and tutor. A student who's strong suit is math could need help peer reviewing their essay, and in exchange for their math skills, someone else who needs math tutoring could help them out in writing. Skilify makes it easy for students to find others to exchange skills with and tutor, efficiently and at no cost.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# How we built it
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Next.js - Framework, Frontend & Backend
+- shadcn-ui - Modern UI Component Library
+- next-auth - User Authentication
+- Firebase Firestore - User Database (Authentication, User Data, Questions)
+- Tailwind CSS - CSS Framework
+- TypeScript - Typed JavaScript (Programming Language)
+- Visual Studio Code - Primary IDE
+- Github - Version Control & Collaboration-\
+- Vercel - Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Challenges
 
-## Learn More
+- Storing user data alongside next-auth - no documentation (should data be stored separately? In the same database?)
+- Paginating data - useSWRInfinite wasn't documented well, and had some issues in implementation
+- Getting the authenticated user's id - next-auth likely doesn't endorse this use-case, and we had to write our own component & API route to retrieve the user's id
+- Securing authentication from bad actors
+- Learning completely new framework and database systems
 
-To learn more about Next.js, take a look at the following resources:
+# Accomplishments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Working project that looks clean and modern
+- Easy to use for end users (Majority of Hackathon time)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# What we learned
 
-## Deploy on Vercel
+- Using NextJS' app router and src folder
+- Creating APIs using NextJS
+- Storing documents in Firebase Firestore
+- Implementing secure authentication and user data with next-auth
+- React states, context and components
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# What's next
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Continue refining UX
+- Authenticate and confidently identify accounts to protect users
+- In House Networking System (Chat, Calling, etc...)
+- Moderation System to keep platform friendly
+- View questions and answers from users
+- Better reputation system
