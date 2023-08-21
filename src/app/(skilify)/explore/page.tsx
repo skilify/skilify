@@ -3,6 +3,7 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -149,7 +150,7 @@ export default function Explore() {
                                     glareMaxOpacity={0.17}
                                 >
                                     <Link href={`/profile/${user.id}`}>
-                                        <Card className="w-72 h-44">
+                                        <Card className="w-72 h-48">
                                             <CardHeader className="pb-2">
                                                 <CardTitle>
                                                     <div className="relative h-10 w-10 rounded-full overflow-clip mb-2">
@@ -168,7 +169,7 @@ export default function Explore() {
                                                     {user.name}
                                                 </CardTitle>
                                             </CardHeader>
-                                            <CardContent className="font-sans text-slate-400 text-sm">
+                                            <CardContent className="font-sans text-slate-400 text-sm pb-2">
                                                 {user.bio || "No bio provided."}
                                                 <div className="relative">
                                                     <div className="absolute top-0 left-0 w-full h-full z-10 bg-gradient-to-r from-transparent from-80% to-card"></div>
@@ -189,6 +190,10 @@ export default function Explore() {
                                                     </div>
                                                 </div>
                                             </CardContent>
+                                            <CardFooter className="pt-0 text-xs font-sans text-muted-foreground">
+                                                {user.reputation || 0}{" "}
+                                                Reputation
+                                            </CardFooter>
                                         </Card>
                                     </Link>
                                 </Tilt>
