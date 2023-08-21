@@ -61,6 +61,7 @@ const FormSchema = z.object({
                     }
                 )
         )
+        .length(10, { message: "You can only have 10 tags." })
         .optional(),
 });
 
