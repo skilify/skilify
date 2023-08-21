@@ -8,28 +8,32 @@ Skilify is a platform for students to exchange network, exchange skills, and tut
 
 # How we built it
 
-- Next.js - Framework, Frontend & Backend
-- shadcn-ui - Modern UI Component Library
-- next-auth - User Authentication
-- Firebase Firestore - User Database (Authentication, User Data, Questions)
-- Tailwind CSS - CSS Framework
-- TypeScript - Typed JavaScript (Programming Language)
-- Visual Studio Code - Primary IDE
-- Github - Version Control & Collaboration
-- Vercel - Deployment
+- [Next.js](https://nextjs.org/) - Framework, Frontend & Backend
+- [shadcn-ui](https://ui.shadcn.com/) - Modern UI Component Library
+- [next-auth](https://next-auth.js.org/) - User Authentication
+- [Firebase Firestore](https://firebase.google.com/) - User Database (Authentication, User Data, Questions)
+- [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
+- [TypeScript](https://typescriptlang.org/) - Typed JavaScript (Programming Language)
+- [Visual Studio Code](https://code.visualstudio.com/) - Primary IDE
+- [Github](https://github.com/) - Version Control & Collaboration
+- [Vercel](https://vercel.app/) - Deployment
 
 # Challenges
 
 - Storing user data alongside next-auth - no documentation (should data be stored separately? In the same database?)
 - Paginating data - useSWRInfinite wasn't documented well, and had some issues in implementation
-- Getting the authenticated user's id - next-auth likely doesn't endorse this use-case, and we had to write our own component & API route to retrieve the user's id
 - Securing authentication from bad actors
 - Learning completely new framework and database systems
+- Merging conflicted files, due to a change in formatting between different developers (different formatting led to numerous conflicts)
+- Getting the authenticated user's id - ~~next-auth likely doesn't endorse this use-case, and we had to write our own component & API route to retrieve the user's id~~ See below "What we learned".
+- Properly attaining user data
+- Protecting routes from bad actors and spam - we found out it was possible to spam create buttons, and overload the database and API (we had to upgrade to the Firebase Blaze plan..)
 
 # Accomplishments
 
 - Working project that looks clean and modern
 - Easy to use for end users (Majority of Hackathon time)
+- Proper and secure authentication
 
 # What we learned
 
@@ -38,6 +42,7 @@ Skilify is a platform for students to exchange network, exchange skills, and tut
 - Storing documents in Firebase Firestore
 - Implementing secure authentication and user data with next-auth
 - React states, context and components
+- next-auth has ways to modify the user object it returns - no need to guess the userid based on the email and name! Big oversight, knowing this could have saved a lot of time and staying within Firebase's free tier.
 
 # What's next
 
